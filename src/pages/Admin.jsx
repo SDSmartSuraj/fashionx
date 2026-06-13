@@ -16,9 +16,8 @@ function Admin() {
 
   const fetchProducts = async () => {
     const { data } = await axios.get(
-      "http://localhost:5000/api/products"
-    );
-
+  "https://fashionx-u0u9.onrender.com/api/products"
+);
     setProducts(data);
   };
 
@@ -30,7 +29,7 @@ function Admin() {
     e.preventDefault();
 
     await axios.post(
-      "http://localhost:5000/api/products",
+      "https://fashionx-u0u9.onrender.com/api/products",
       form
     );
 
@@ -126,7 +125,7 @@ function Admin() {
       if (!newName) return;
 
       axios.put(
-        `http://localhost:5000/api/products/${product._id}`,
+        `https://fashionx-u0u9.onrender.com/api/products/${product._id}`,
         {
           ...product,
           name: newName,
@@ -143,7 +142,7 @@ function Admin() {
   <button
     onClick={async () => {
       await axios.delete(
-        `http://localhost:5000/api/products/${product._id}`
+        `https://fashionx-u0u9.onrender.com/api/products/${product._id}`
       );
 
       fetchProducts();

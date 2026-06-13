@@ -21,8 +21,8 @@ function ProductDetails() {
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/products/${id}`
-        );
+  "https://fashionx-u0u9.onrender.com/api/products"
+);
 
         setProduct(data);
       } catch (error) {
