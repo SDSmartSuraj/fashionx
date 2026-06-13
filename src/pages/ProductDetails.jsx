@@ -21,10 +21,10 @@ function ProductDetails() {
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(
-  "https://fashionx-u0u9.onrender.com/api/products"
+  `https://fashionx-u0u9.onrender.com/api/products/${id}`
 );
 
-        setProduct(data);
+setProduct(data);
       } catch (error) {
         console.log(error);
       } finally {
