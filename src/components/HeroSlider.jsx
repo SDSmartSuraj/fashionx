@@ -5,7 +5,7 @@ function HeroSlider() {
   initial={{ opacity: 0, y: 80 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 1 }}
-  className="text-center text-white"
+className="text-center text-white"
 >
   <h1 className="text-7xl md:text-8xl font-black">
     Elevate Your Style

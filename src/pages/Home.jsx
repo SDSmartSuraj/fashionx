@@ -15,6 +15,7 @@ import BrandLogos from "../components/BrandLogos";
 import InstagramGallery from "../components/InstagramGallery";
 import LuxuryMarquee from "../components/LuxuryMarquee";
 import Testimonials from "../components/Testimonials";
+
 function Home() {
   return (
     <>
@@ -22,7 +23,19 @@ function Home() {
 
 <SaleBanner />
 
-<HeroSlider />
+<section
+  className="relative h-screen flex items-center justify-center bg-cover bg-center"
+  style={{
+    backgroundImage:
+      "url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600')",
+  }}
+>
+  <div className="absolute inset-0 bg-black/40"></div>
+
+  <div className="relative z-10">
+    <HeroSlider />
+  </div>
+</section>
 <LuxuryMarquee />
 <TrendingCollection />
 

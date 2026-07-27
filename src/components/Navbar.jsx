@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   FaShoppingCart,
@@ -12,6 +12,10 @@ import useCartStore from "../store/cartStore";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
+
   const wishlist = useWishlistStore(
     (state) => state.wishlist
   );
@@ -20,10 +24,16 @@ function Navbar() {
     (state) => state.cart
   );
 
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      navigate(`/shop?search=${encodeURIComponent(search)}`);
+    }
+  };
+
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-gradient-to-r from-black via-gray-900 to-black text-white text-center py-3 text-sm tracking-wider">
+      <div className="bg-linear-to-r from-black via-gray-900 to-black text-white text-center py-3 text-sm tracking-wider">
         ✨ PREMIUM COLLECTIONS • FREE SHIPPING ABOVE ₹999
       </div>
 
@@ -35,8 +45,8 @@ function Navbar() {
           <Link to="/">
             <div>
               <h1 className="text-4xl font-black tracking-[6px]">
-  FASHIONX
-</h1>
+                FASHIONX
+              </h1>
 
               <p className="text-[10px] tracking-[6px] text-gray-500 uppercase">
                 Premium Collection
@@ -46,38 +56,23 @@ function Navbar() {
 
           {/* Menu */}
           <div className="hidden md:flex gap-10 font-semibold uppercase tracking-wider text-sm">
-           <Link
-  to="/"
-  className="hover:text-gray-500 transition"
->
-  Home
-</Link>
+            <Link to="/" className="hover:text-gray-500 transition">
+              Home
+            </Link>
 
-            <Link
-              to="/shop"
-              className="hover:text-gray-500"
-            >
+            <Link to="/shop" className="hover:text-gray-500">
               Shop
             </Link>
 
-           <Link
-  to="/men"
-  className="hover:text-gray-500 transition"
->
-  Men
-</Link>
+            <Link to="/men" className="hover:text-gray-500 transition">
+              Men
+            </Link>
 
-<Link
-  to="/women"
-  className="hover:text-gray-500 transition"
->
-  Women
-</Link>
+            <Link to="/women" className="hover:text-gray-500 transition">
+              Women
+            </Link>
 
-            <Link
-              to="/"
-              className="hover:text-gray-500"
-            >
+            <Link to="/collections" className="hover:text-gray-500">
               Collections
             </Link>
           </div>
@@ -89,28 +84,29 @@ function Navbar() {
             <input
               type="text"
               placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
               className="bg-transparent outline-none ml-3 w-full"
             />
           </div>
 
-         {/* Mobile Menu Button */}
-<button
-  className="md:hidden text-3xl"
-  onClick={() => setMenuOpen(!menuOpen)}
->
-  ☰
-</button>
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-3xl"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            ☰
+          </button>
 
-{/* Icons */}
-<div className="flex items-center gap-4 md:gap-6">
-           <Link
-  to="/wishlist"
-  className="relative"
->
-  <FaHeart
-    size={20}
-    className="cursor-pointer hover:scale-125 transition duration-300"
-  />
+          {/* Icons */}
+          <div className="flex items-center gap-4 md:gap-6">
+
+            <Link to="/wishlist" className="relative">
+              <FaHeart
+                size={20}
+                className="cursor-pointer hover:scale-125 transition duration-300"
+              />
 
               <span className="absolute -top-3 -right-3 bg-pink-500 text-white text-xs px-2 rounded-full">
                 {wishlist.length}
@@ -122,28 +118,29 @@ function Navbar() {
               className="hover:scale-110 transition"
             >
               <FaUser
-  size={20}
-  className="cursor-pointer hover:scale-125 transition duration-300"
-/>
+                size={20}
+                className="cursor-pointer hover:scale-125 transition duration-300"
+              />
             </Link>
 
             <Link
               to="/cart"
               className="relative hover:scale-110 transition"
             >
-             <FaShoppingCart
-  size={22}
-  className="hover:scale-125 transition duration-300"
-/>
+              <FaShoppingCart
+                size={22}
+                className="hover:scale-125 transition duration-300"
+              />
 
               <span className="absolute -top-3 -right-3 bg-black text-white text-xs px-2 rounded-full">
                 {cart.length}
               </span>
             </Link>
 
-                    </div>
+          </div>
         </div>
 
+        {/* Mobile Menu */}
         {menuOpen && (
           <div className="md:hidden bg-white border-t">
             <div className="flex flex-col p-6 gap-5 font-semibold uppercase">
@@ -176,17 +173,16 @@ function Navbar() {
                 Women
               </Link>
 
-             <Link
-  to="/collections"
-  className="hover:text-gray-500"
->
-  Collections
-</Link>
+              <Link
+                to="/collections"
+                onClick={() => setMenuOpen(false)}
+              >
+                Collections
+              </Link>
 
             </div>
           </div>
         )}
-
       </nav>
     </>
   );

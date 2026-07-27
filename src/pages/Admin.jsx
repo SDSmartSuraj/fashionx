@@ -116,28 +116,28 @@ function Admin() {
 
            <div className="flex gap-3">
   <button
-    onClick={() => {
-      const newName = prompt(
-        "Enter New Product Name",
-        product.name
-      );
+  onClick={async () => {
+    const newName = prompt(
+      "Enter New Product Name",
+      product.name
+    );
 
-      if (!newName) return;
+    if (!newName) return;
 
-      axios.put(
-        `https://fashionx-u0u9.onrender.com/api/products/${product._id}`,
-        {
-          ...product,
-          name: newName,
-        }
-      );
+    await axios.put(
+      `https://fashionx-u0u9.onrender.com/api/products/${product._id}`,
+      {
+        ...product,
+        name: newName,
+      }
+    );
 
-      fetchProducts();
-    }}
-    className="bg-blue-500 text-white px-4 py-2 rounded"
-  >
-    Edit
-  </button>
+    fetchProducts();
+  }}
+  className="bg-blue-500 text-white px-4 py-2 rounded"
+>
+  Edit
+</button>
 
   <button
     onClick={async () => {
