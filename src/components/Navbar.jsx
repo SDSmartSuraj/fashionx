@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   FaShoppingCart,
   FaHeart,
@@ -13,7 +14,34 @@ import useCartStore from "../store/cartStore";
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://fashionx-u0u9.onrender.com/api/products"
+      );
+      setProducts(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  fetchProducts();
+}, []);
+useEffect(() => {
+  if (search.trim() === "") {
+    setFilteredProducts([]);
+    return;
+  }
+
+  const results = products.filter((product) =>
+    product.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  setFilteredProducts(results);
+}, [search, products]);
   const navigate = useNavigate();
 
   const wishlist = useWishlistStore(
@@ -78,18 +106,61 @@ function Navbar() {
           </div>
 
           {/* Search */}
-          <div className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-3 w-72">
-            <FaSearch className="text-gray-400" />
+         {/* Search */}
+<div className="hidden md:block relative w-72">
 
-            <input
-              type="text"
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={handleSearch}
-              className="bg-transparent outline-none ml-3 w-full"
-            />
+  <div className="flex items-center bg-gray-100 rounded-full px-4 py-3">
+    <FaSearch className="text-gray-400" />
+
+    <input
+      type="text"
+      placeholder="Search products..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      onKeyDown={handleSearch}
+      className="bg-transparent outline-none ml-3 w-full"
+    />
+  </div>
+
+  {filteredProducts.length > 0 && (
+    <div className="absolute top-16 left-0 w-full bg-white rounded-2xl shadow-xl border z-50 overflow-hidden">
+
+      {filteredProducts.slice(0, 5).map((product) => (
+        <Link
+          key={product._id}
+          to={`/product/${product._id}`}
+          onClick={() => {
+  setSearch("");
+  setFilteredProducts([]);
+}}
+          className="flex items-center gap-3 p-3 hover:bg-gray-100 transition"
+        >
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-12 h-12 rounded-lg object-cover"
+          />
+
+          <div className="flex-1">
+            <h3 className="font-semibold text-sm">
+              {product.name}
+            </h3>
+
+            <p className="text-gray-500 text-sm">
+              ₹{product.price}
+            </p>
           </div>
+        </Link>
+      ))}
+
+    </div>
+  )}
+{search.trim() !== "" && filteredProducts.length === 0 && (
+  <div className="absolute top-16 left-0 w-full bg-white rounded-2xl shadow-xl border p-4 z-50 text-center text-gray-500">
+    No products found
+  </div>
+)}
+</div>
 
           {/* Mobile Menu Button */}
           <button
@@ -133,7 +204,10 @@ function Navbar() {
               />
 
               <span className="absolute -top-3 -right-3 bg-black text-white text-xs px-2 rounded-full">
-                {cart.length}
+                {cart.reduce(
+  (total, item) => total + item.quantity,
+  0
+)}
               </span>
             </Link>
 

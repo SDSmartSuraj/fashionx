@@ -206,18 +206,18 @@ setProduct(data);
 
             {/* Add To Cart */}
             <button
-              onClick={() =>
-                addToCart({
-                  ...product,
-                  size,
-                  qty,
-                })
-              }
-              className="mt-10 w-full bg-black text-white py-5 rounded-2xl text-lg font-bold hover:bg-gray-800 transition"
-            >
-              Add To Cart
-            </button>
-
+  onClick={() => {
+    for (let i = 0; i < qty; i++) {
+      addToCart({
+        ...product,
+        size,
+      });
+    }
+  }}
+  className="mt-10 w-full bg-black text-white py-5 rounded-2xl text-lg font-bold hover:bg-gray-800 transition"
+>
+  Add To Cart
+</button>
             {/* Delivery */}
             <div className="mt-8 bg-gray-50 p-6 rounded-3xl">
 
